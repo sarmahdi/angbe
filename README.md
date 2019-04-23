@@ -1,6 +1,8 @@
-# Swagger generated server
+# angbe
 
 Spring Boot Server 
+
+The backend application for A & G. It is based on an existing Swagger definition. 
 
 
 ## Overview  
@@ -15,4 +17,4 @@ Start your server as an simple java application
 You can view the api documentation in swagger-ui by pointing to  
 http://localhost:8080/  
 
-Change default port value in application.properties# angbe
+Change default port value in application.properties
