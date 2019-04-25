@@ -24,13 +24,17 @@ public interface StatusApiDelegate {
 
     Logger log = LoggerFactory.getLogger(StatusApi.class);
 
+    HttpServletRequest request = null;
+
     default Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
+        return Optional.of(new ObjectMapper());
     }
 
     default Optional<HttpServletRequest> getRequest() {
-        return Optional.empty();
+        return Optional.of(request);
     }
+
+
 
     default Optional<String> getAcceptHeader() {
         return getRequest().map(r -> r.getHeader("Accept"));
@@ -41,18 +45,19 @@ public interface StatusApiDelegate {
      */
     default ResponseEntity<StatusResponse> statusGet() {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
-            if (getAcceptHeader().get().contains("application/json")) {
-                try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"status\" : \"healthy\"}", StatusResponse.class), HttpStatus.NOT_IMPLEMENTED);
-                } catch (IOException e) {
-                    log.error("Couldn't serialize response for content type application/json", e);
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
+           // if (getAcceptHeader().get().contains("application/json")) {
+            try {
+                return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"status\" : \"healthy\"}", StatusResponse.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
+//        }
         } else {
             log.warn("ObjectMapper or HttpServletRequest not configured in default StatusApi interface so no example is generated");
         }
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    void setRequest(HttpServletRequest request);
 }

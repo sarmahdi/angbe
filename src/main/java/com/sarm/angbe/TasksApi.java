@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -36,7 +37,8 @@ public interface TasksApi {
     @RequestMapping(value = "/tasks/validateBrackets",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<BalanceTestResult> tasksValidateBracketsGet(@NotNull @Size(min=1,max=100) @ApiParam(value = "Input string (max length 100)", required = true) @Valid @RequestParam(value = "input", required = true) String input) {
+    default ResponseEntity<BalanceTestResult> tasksValidateBracketsGet(@NotNull @Size(min=1,max=100) @ApiParam(value = "Input string (max length 100)", required = true) @Valid @RequestParam(value = "input", required = true) String input, HttpServletRequest request) {
+        getDelegate().setRequest(request);
         return getDelegate().tasksValidateBracketsGet(input);
     }
 

@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Service
 public class StatusApiDelegateImpl implements StatusApiDelegate {
+
+    HttpServletRequest request = null;
+
     @Override
     public Optional<ObjectMapper> getObjectMapper() {
         return Optional.of(new ObjectMapper());
@@ -17,9 +20,12 @@ public class StatusApiDelegateImpl implements StatusApiDelegate {
 
     @Override
     public Optional<HttpServletRequest> getRequest() {
-        return Optional.empty();
+        return Optional.of(request);
     }
 
-
+    @Override
+    public  void setRequest(HttpServletRequest request){
+        this.request = request;
+    }
 
 }

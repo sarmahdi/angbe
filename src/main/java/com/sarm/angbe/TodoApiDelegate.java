@@ -44,7 +44,7 @@ public interface TodoApiDelegate {
     /**
      * @see TodoApi#todoIdGet
      */
-    default ResponseEntity<ToDoItem> todoIdGet( BigDecimal  id) {
+    default ResponseEntity<ToDoItem> todoIdGet( Long  id) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
@@ -63,7 +63,7 @@ public interface TodoApiDelegate {
     /**
      * @see TodoApi#todoIdPatch
      */
-    default ResponseEntity<ToDoItem> todoIdPatch( BigDecimal  id,
+    default ResponseEntity<ToDoItem> todoIdPatch( Long  id,
          ToDoItemUpdateRequest  body) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
@@ -99,4 +99,5 @@ public interface TodoApiDelegate {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    void setRequest(HttpServletRequest request);
 }

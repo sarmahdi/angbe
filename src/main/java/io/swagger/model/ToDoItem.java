@@ -8,6 +8,12 @@ import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.io.Serializable;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Entity;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -16,12 +22,14 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-04-19T17:35:38.768Z")
-
+@Entity
 public class ToDoItem  implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")
-  private BigDecimal id = null;
+  @Id
+  @GeneratedValue
+  private Long id = null;
 
   @JsonProperty("text")
   private String text = null;
@@ -32,7 +40,7 @@ public class ToDoItem  implements Serializable {
   @JsonProperty("createdAt")
   private String createdAt = null;
 
-  public ToDoItem id(BigDecimal id) {
+  public ToDoItem id(Long id) {
     this.id = id;
     return this;
   }
@@ -45,11 +53,11 @@ public class ToDoItem  implements Serializable {
 
   @Valid
 
-  public BigDecimal getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(BigDecimal id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

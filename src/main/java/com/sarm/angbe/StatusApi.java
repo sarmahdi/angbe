@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -34,7 +35,8 @@ public interface StatusApi {
     @RequestMapping(value = "/status",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<StatusResponse> statusGet() {
+    default ResponseEntity<StatusResponse> statusGet(HttpServletRequest request) {
+            getDelegate().setRequest(request);
         return getDelegate().statusGet();
     }
 

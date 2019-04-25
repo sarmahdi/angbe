@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -41,7 +42,9 @@ public interface TodoApi {
     @RequestMapping(value = "/todo/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<ToDoItem> todoIdGet(@ApiParam(value = "id",required=true) @PathVariable("id") BigDecimal id) {
+    default ResponseEntity<ToDoItem> todoIdGet(@ApiParam(value = "id",required=true) @PathVariable("id") Long id, HttpServletRequest request) {
+        getDelegate().setRequest(request);
+
         return getDelegate().todoIdGet(id);
     }
 
@@ -55,7 +58,9 @@ public interface TodoApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PATCH)
-    default ResponseEntity<ToDoItem> todoIdPatch(@ApiParam(value = "id",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemUpdateRequest body) {
+    default ResponseEntity<ToDoItem> todoIdPatch(@ApiParam(value = "id",required=true) @PathVariable("id") Long id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemUpdateRequest body, HttpServletRequest request) {
+        getDelegate().setRequest(request);
+
         return getDelegate().todoIdPatch(id, body);
     }
 
@@ -68,7 +73,9 @@ public interface TodoApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<ToDoItem> todoPost(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemAddRequest body) {
+    default ResponseEntity<ToDoItem> todoPost(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemAddRequest body, HttpServletRequest request) {
+        getDelegate().setRequest(request);
+
         return getDelegate().todoPost(body);
     }
 

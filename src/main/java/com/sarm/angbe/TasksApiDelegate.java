@@ -42,18 +42,23 @@ public interface TasksApiDelegate {
      */
     default ResponseEntity<BalanceTestResult> tasksValidateBracketsGet( String  input) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
-            if (getAcceptHeader().get().contains("application/json")) {
+//            if (getAcceptHeader().get().contains("application/json")) {
                 try {
-                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"input\" : \"[(]\",  \"isBalanced\" : false}", BalanceTestResult.class), HttpStatus.NOT_IMPLEMENTED);
+                   boolean isBalanced = checkIfBracketsBalance(input);
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"input\" :\" "+ input+"\",  \"isBalanced\" : "+isBalanced+"}", BalanceTestResult.class), HttpStatus.NOT_IMPLEMENTED);
                 } catch (IOException e) {
                     log.error("Couldn't serialize response for content type application/json", e);
                     return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
                 }
-            }
+//            }
         } else {
             log.warn("ObjectMapper or HttpServletRequest not configured in default TasksApi interface so no example is generated");
         }
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
+
+    Boolean checkIfBracketsBalance(String input);
+
+    void setRequest(HttpServletRequest request);
 
 }
