@@ -24,6 +24,11 @@ public class TasksApiDelegateImpl implements TasksApiDelegate {
         return Optional.of(request);
     }
 
+    /**
+     * checks if the brackets are balanced in an input string
+     * @param input
+     * @return
+     */
     @Override
     public Boolean checkIfBracketsBalance(String input) {
             Stack<Character> stack  = new Stack<>();

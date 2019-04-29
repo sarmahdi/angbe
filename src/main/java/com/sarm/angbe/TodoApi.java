@@ -6,11 +6,8 @@
 package com.sarm.angbe;
 
 import java.math.BigDecimal;
-import io.swagger.model.ToDoItem;
-import io.swagger.model.ToDoItemAddRequest;
-import io.swagger.model.ToDoItemNotFoundError;
-import io.swagger.model.ToDoItemUpdateRequest;
-import io.swagger.model.ToDoItemValidationError;
+
+import io.swagger.model.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,7 +39,7 @@ public interface TodoApi {
     @RequestMapping(value = "/todo/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<ToDoItem> todoIdGet(@ApiParam(value = "id",required=true) @PathVariable("id") Long id, HttpServletRequest request) {
+    default  ResponseEntity<? extends ToDoResponse>  todoIdGet(@ApiParam(value = "id",required=true) @PathVariable("id") String id, HttpServletRequest request) {
         getDelegate().setRequest(request);
 
         return getDelegate().todoIdGet(id);
@@ -58,7 +55,7 @@ public interface TodoApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PATCH)
-    default ResponseEntity<ToDoItem> todoIdPatch(@ApiParam(value = "id",required=true) @PathVariable("id") Long id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemUpdateRequest body, HttpServletRequest request) {
+    default  ResponseEntity<? extends ToDoResponse>  todoIdPatch(@ApiParam(value = "id",required=true) @PathVariable("id") String id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemUpdateRequest body, HttpServletRequest request) {
         getDelegate().setRequest(request);
 
         return getDelegate().todoIdPatch(id, body);
@@ -73,7 +70,7 @@ public interface TodoApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<ToDoItem> todoPost(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemAddRequest body, HttpServletRequest request) {
+    default  ResponseEntity<? extends ToDoResponse>  todoPost(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ToDoItemAddRequest body, HttpServletRequest request) {
         getDelegate().setRequest(request);
 
         return getDelegate().todoPost(body);

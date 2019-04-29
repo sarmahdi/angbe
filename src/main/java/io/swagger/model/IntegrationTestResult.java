@@ -32,6 +32,17 @@ public class IntegrationTestResult  implements Serializable {
   @JsonProperty("isCorrect")
   private Boolean isCorrect = null;
 
+  public IntegrationTestResult() {
+  }
+
+  @JsonCreator
+  public IntegrationTestResult(@JsonProperty("bracers") List<BracersTestResult> bracers,@JsonProperty("todo") List<ToDoTestResult> todo ){
+    this.bracers = bracers;
+    this.todo = todo;
+
+  }
+
+
   public IntegrationTestResult bracers(List<BracersTestResult> bracers) {
     this.bracers = bracers;
     return this;

@@ -47,7 +47,7 @@ public interface StatusApiDelegate {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
            // if (getAcceptHeader().get().contains("application/json")) {
             try {
-                return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"status\" : \"healthy\"}", StatusResponse.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<>(getObjectMapper().get().readValue("{  \"status\" : \"healthy\"}", StatusResponse.class), HttpStatus.OK);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

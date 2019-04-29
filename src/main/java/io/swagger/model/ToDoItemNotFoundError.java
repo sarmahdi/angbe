@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -19,7 +21,7 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-04-19T17:35:38.768Z")
 
-public class ToDoItemNotFoundError  implements Serializable {
+public class ToDoItemNotFoundError extends ToDoResponse  implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("details")
@@ -28,6 +30,18 @@ public class ToDoItemNotFoundError  implements Serializable {
 
   @JsonProperty("name")
   private String name = null;
+
+  public ToDoItemNotFoundError(String notFoundError, Long id) {
+    details= new ArrayList<>();
+    details.add(new ToDoItemNotFoundErrorDetails(id));
+    this.name= notFoundError;
+  }
+
+  @JsonCreator
+  public ToDoItemNotFoundError(@JsonProperty("details") @Valid List<ToDoItemNotFoundErrorDetails> details, @JsonProperty("name") String name) {
+    this.details = details;
+    this.name = name;
+  }
 
   public ToDoItemNotFoundError details(List<ToDoItemNotFoundErrorDetails> details) {
     this.details = details;
@@ -57,6 +71,10 @@ public class ToDoItemNotFoundError  implements Serializable {
   public void setDetails(List<ToDoItemNotFoundErrorDetails> details) {
     this.details = details;
   }
+
+//  public String getFirstMessage(){
+//    return this.details.get(0).getMessage();
+//  }
 
   public ToDoItemNotFoundError name(String name) {
     this.name = name;

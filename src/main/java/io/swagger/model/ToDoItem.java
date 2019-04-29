@@ -23,7 +23,7 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-04-19T17:35:38.768Z")
 @Entity
-public class ToDoItem  implements Serializable {
+public class ToDoItem extends ToDoResponse  implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("id")

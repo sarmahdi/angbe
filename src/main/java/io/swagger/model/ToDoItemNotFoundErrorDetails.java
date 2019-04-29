@@ -22,9 +22,16 @@ public class ToDoItemNotFoundErrorDetails  implements Serializable {
   @JsonProperty("message")
   private String message = null;
 
+  public ToDoItemNotFoundErrorDetails(Long id) {
+    this.message = java.text.MessageFormat.format("Todo Item with id {0} was not found",id);
+  }
+
   public ToDoItemNotFoundErrorDetails message(String message) {
     this.message = message;
     return this;
+  }
+
+  public ToDoItemNotFoundErrorDetails() {
   }
 
   /**

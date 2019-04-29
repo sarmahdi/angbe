@@ -8,6 +8,7 @@ package com.sarm.angbe;
 import io.swagger.model.BalanceTestResult;
 import io.swagger.model.ToDoItemValidationError;
 import io.swagger.annotations.*;
+import io.swagger.model.ToDoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,8 @@ public interface TasksApi {
     @RequestMapping(value = "/tasks/validateBrackets",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<BalanceTestResult> tasksValidateBracketsGet(@NotNull @Size(min=1,max=100) @ApiParam(value = "Input string (max length 100)", required = true) @Valid @RequestParam(value = "input", required = true) String input, HttpServletRequest request) {
+    default ResponseEntity<? extends ToDoResponse> tasksValidateBracketsGet(@NotNull @Size(min=1,max=100) @ApiParam(value = "Input string (max length 100)", required = true) @Valid @RequestParam(value = "input", required = true) String input,
+                                                                            HttpServletRequest request) {
         getDelegate().setRequest(request);
         return getDelegate().tasksValidateBracketsGet(input);
     }

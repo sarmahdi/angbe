@@ -31,6 +31,16 @@ public class ToDoItemValidationErrorDetails  implements Serializable {
   @JsonProperty("value")
   private String value = null;
 
+  public ToDoItemValidationErrorDetails() {
+  }
+
+  public ToDoItemValidationErrorDetails(String location, String param, String msg, String value) {
+    this.location=location;
+    this.param= param;
+    this.msg = msg;
+    this.value= value;
+  }
+
   public ToDoItemValidationErrorDetails location(String location) {
     this.location = location;
     return this;

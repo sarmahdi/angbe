@@ -26,6 +26,9 @@ public class ToDoTestResult  implements Serializable {
   @JsonProperty("result")
   private ToDoItem result = null;
 
+  public ToDoTestResult() {
+  }
+
   public ToDoTestResult input(String input) {
     this.input = input;
     return this;

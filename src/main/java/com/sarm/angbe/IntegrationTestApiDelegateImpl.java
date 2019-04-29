@@ -10,23 +10,23 @@ import java.util.Optional;
 
 @Service
 public class IntegrationTestApiDelegateImpl implements IntegrationTestApiDelegate {
+    HttpServletRequest request = null;
+
     @Override
     public Optional<ObjectMapper> getObjectMapper() {
-        return Optional.empty();
+        return Optional.of(new ObjectMapper());
     }
 
     @Override
     public Optional<HttpServletRequest> getRequest() {
-        return Optional.empty();
+        return Optional.of(request);
     }
 
-    @Override
-    public Optional<String> getAcceptHeader() {
-        return Optional.empty();
-    }
 
     @Override
-    public ResponseEntity<IntegrationTestResult> integrationTestGet(String url) {
-        return null;
+    public  void setRequest(HttpServletRequest request){
+        this.request = request;
     }
+
+
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -34,7 +35,8 @@ public interface IntegrationTestApi {
     @RequestMapping(value = "/integrationTest",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<IntegrationTestResult> integrationTestGet(@NotNull @ApiParam(value = "base url of remote API to test", required = true) @Valid @RequestParam(value = "url", required = true) String url) {
+    default ResponseEntity<IntegrationTestResult> integrationTestGet(@NotNull @ApiParam(value = "base url of remote API to test", required = true) @Valid @RequestParam(value = "url", required = true) String url, HttpServletRequest request) {
+        getDelegate().setRequest(request);
         return getDelegate().integrationTestGet(url);
     }
 

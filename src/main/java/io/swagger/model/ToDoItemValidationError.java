@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2019-04-19T17:35:38.768Z")
 
-public class ToDoItemValidationError  implements Serializable {
+public class ToDoItemValidationError  extends ToDoResponse implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("details")
@@ -28,6 +28,17 @@ public class ToDoItemValidationError  implements Serializable {
 
   @JsonProperty("name")
   private String name = null;
+
+  public ToDoItemValidationError(String location, String param, String msg, String value, String name) {
+    this.name= name;
+    this.addDetailsItem(new ToDoItemValidationErrorDetails(location,param, msg,value));
+  }
+
+  @JsonCreator
+  public ToDoItemValidationError(@JsonProperty("details") List<ToDoItemValidationErrorDetails> details, @JsonProperty("name") String name){
+    this.details =details;
+    this.name = name;
+  }
 
   public ToDoItemValidationError details(List<ToDoItemValidationErrorDetails> details) {
     this.details = details;

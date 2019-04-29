@@ -1,11 +1,9 @@
 package com.sarm.angbe;
 
 import java.math.BigDecimal;
-import io.swagger.model.ToDoItem;
-import io.swagger.model.ToDoItemAddRequest;
-import io.swagger.model.ToDoItemNotFoundError;
-import io.swagger.model.ToDoItemUpdateRequest;
-import io.swagger.model.ToDoItemValidationError;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -44,7 +42,7 @@ public interface TodoApiDelegate {
     /**
      * @see TodoApi#todoIdGet
      */
-    default ResponseEntity<ToDoItem> todoIdGet( Long  id) {
+    default  ResponseEntity<? extends ToDoResponse>  todoIdGet(String  id) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
@@ -63,7 +61,7 @@ public interface TodoApiDelegate {
     /**
      * @see TodoApi#todoIdPatch
      */
-    default ResponseEntity<ToDoItem> todoIdPatch( Long  id,
+    default  ResponseEntity<? extends ToDoResponse>  todoIdPatch( String  strId,
          ToDoItemUpdateRequest  body) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
@@ -83,7 +81,7 @@ public interface TodoApiDelegate {
     /**
      * @see TodoApi#todoPost
      */
-    default ResponseEntity<ToDoItem> todoPost( ToDoItemAddRequest  body) {
+    default  ResponseEntity<? extends ToDoResponse>   todoPost( ToDoItemAddRequest  body) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {
                 try {
@@ -100,4 +98,31 @@ public interface TodoApiDelegate {
     }
 
     void setRequest(HttpServletRequest request);
+
+    default  ResponseEntity<ToDoItemNotFoundError> createNotFoundError(Long id) throws IOException {
+
+        String s = null;
+        try {
+            s = getObjectMapper().get().writeValueAsString(new ToDoItemNotFoundError("NotFoundError",id));
+        }
+        catch (JsonProcessingException e) {
+            log.error(" JsonProcessingException : Couldn't Process Json for content type ", e);
+        }
+        return new ResponseEntity<ToDoItemNotFoundError>(getObjectMapper().get().readValue(s,ToDoItemNotFoundError.class),HttpStatus.NOT_FOUND);
+
+    }
+
+    default ResponseEntity<ToDoItemValidationError> createValidationError(String param, String location, String msg, String value) throws IOException {
+        String s = null;
+        try {
+            s = getObjectMapper().get().writeValueAsString(new  ToDoItemValidationError(location,param,msg,value, "Validation Error"));
+        }
+        catch (JsonProcessingException e) {
+            log.error(" JsonProcessingException : Couldn't Process Json for content type ", e);
+        }
+        return new ResponseEntity<ToDoItemValidationError>(getObjectMapper().get().readValue(s,ToDoItemValidationError.class),HttpStatus.BAD_REQUEST);
+
+    }
+
+
 }

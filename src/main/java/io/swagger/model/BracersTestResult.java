@@ -31,6 +31,9 @@ public class BracersTestResult  implements Serializable {
   @JsonProperty("isCorrect")
   private Boolean isCorrect = null;
 
+  public BracersTestResult() {
+  }
+
   public BracersTestResult input(String input) {
     this.input = input;
     return this;
