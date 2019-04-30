@@ -46,6 +46,7 @@ public interface TasksApiDelegate {
      */
     default ResponseEntity<? extends ToDoResponse> tasksValidateBracketsGet(String  input) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            //            removing to be able to access through a browser easily
 //            if (getAcceptHeader().get().contains("application/json")) {
                 try {
                     if(!validateInput(input)){

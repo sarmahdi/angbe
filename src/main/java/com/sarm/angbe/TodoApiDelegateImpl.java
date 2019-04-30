@@ -1,8 +1,10 @@
 package com.sarm.angbe;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.model.*;
+import io.swagger.model.ToDoItem;
+import io.swagger.model.ToDoItemAddRequest;
+import io.swagger.model.ToDoItemUpdateRequest;
+import io.swagger.model.ToDoResponse;
 import io.swagger.model.repository.TodoItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +14,8 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.atomic.LongAdder;
 
 @Service
 public class TodoApiDelegateImpl implements TodoApiDelegate {
@@ -35,11 +35,18 @@ public class TodoApiDelegateImpl implements TodoApiDelegate {
         return Optional.of(request);
     }
 
-
+    /**
+     *  Facilitates a GET request
+     *  It can throw a validation error if the id is non numeric
+     *  or it can throw a notFoundError if the id is not used in the database and has no record for that id
+     * @param strId
+     * @return
+     */
    @Override
     public ResponseEntity<? extends ToDoResponse> todoIdGet(String  strId) {
         Long id = null;
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            //            removing to be able to access through a browser easily
 //            if (getAcceptHeader().get().contains("application/json")) {
                 try {
                     boolean isNumeric = strId.chars().allMatch( Character::isDigit );
@@ -52,11 +59,10 @@ public class TodoApiDelegateImpl implements TodoApiDelegate {
 
                     Optional<ToDoItem> toDoItem = todoItemRepository.findById(id);
                     if(toDoItem.isPresent()){
-                        return  new ResponseEntity<ToDoItem>(getObjectMapper().get().readValue("{  \"createdAt\" : \" "+toDoItem.map(ToDoItem::getCreatedAt).orElse("NA") + "\",  \"id\" : "+ toDoItem.map(ToDoItem::getId).map(String::valueOf).orElse( "0" )+",  \"text\" : \" "+ toDoItem.map(ToDoItem::getText).orElse("NA")+"\",  \"isCompleted\" : "+toDoItem.map(ToDoItem::isIsCompleted).orElse(false)+"}", ToDoItem.class), HttpStatus.OK);
+                        return  new ResponseEntity<>(getObjectMapper().get().readValue("{  \"createdAt\" : \" "+toDoItem.map(ToDoItem::getCreatedAt).orElse("NA") + "\",  \"id\" : "+ toDoItem.map(ToDoItem::getId).map(String::valueOf).orElse( "0" )+",  \"text\" : \" "+ toDoItem.map(ToDoItem::getText).orElse("NA")+"\",  \"isCompleted\" : "+toDoItem.map(ToDoItem::isIsCompleted).orElse(false)+"}", ToDoItem.class), HttpStatus.OK);
 
                     }else{
                     return createNotFoundError(id);
-                    //                        return  new ResponseEntity<ToDoItemNotFoundError>(getObjectMapper().get().readValue("{  \"name \" : \" "+ toDoItemNotFoundError.getName()  + "\",  \"details \" : "+ toDoItemNotFoundError.getDetails()+"\" }", ToDoItemNotFoundError.class), HttpStatus.NOT_FOUND);
                     }
                 } catch (IOException e) {
                     log.error("Couldn't serialize response for content type application/json", e);
@@ -102,7 +108,6 @@ public class TodoApiDelegateImpl implements TodoApiDelegate {
                     if (toDoItem.isPresent()){
                         // do partial Update, let not the Null value override the original value
                         toDoItem.get().isCompleted( body.isIsCompleted()!=null ? body.isIsCompleted() : toDoItem.get().isIsCompleted());
-//                        toDoItem.get().setText(body.getText()!= null ? (StringUtils.hasText(body.getText()) ? body.getText() : toDoItem.get().getText()) : toDoItem.get().getText() );
 
                         if (body.getText()==(null) || body.getText().contentEquals("") || body.getText().isEmpty() || body.getText().trim().isEmpty() || !StringUtils.hasText(body.getText())){
                             toDoItem.get().setText( toDoItem.get().getText() );
@@ -115,7 +120,6 @@ public class TodoApiDelegateImpl implements TodoApiDelegate {
 
                     }else{
                         return createNotFoundError(id);
-//                        return  new ResponseEntity<>(getObjectMapper().get().readValue("{  \"name \" : \" "+ toDoItemNotFoundError.getName()  + "\",  \"details \" : "+ toDoItemNotFoundError.getDetails()+"\" }", ToDoItemNotFoundError.class), HttpStatus.NOT_FOUND);
 
                     }
                 } catch (IOException e) {
@@ -130,6 +134,7 @@ public class TodoApiDelegateImpl implements TodoApiDelegate {
     }
 
     /**
+     * facilitates a POST request
      * Checks is the body is empty or just spaces before adding or raises a Validation error
      * @see TodoApi#todoPost
      */
@@ -162,6 +167,8 @@ public class TodoApiDelegateImpl implements TodoApiDelegate {
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
+
+
     @Override
     public  void setRequest(HttpServletRequest request){
         this.request = request;

@@ -1,20 +1,15 @@
 package com.sarm.angbe;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
+import io.swagger.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -40,6 +35,7 @@ public interface TodoApiDelegate {
     }
 
     /**
+     * facilitates a GET request
      * @see TodoApi#todoIdGet
      */
     default  ResponseEntity<? extends ToDoResponse>  todoIdGet(String  id) {
@@ -59,6 +55,7 @@ public interface TodoApiDelegate {
     }
 
     /**
+     * facilitates a Patch request
      * @see TodoApi#todoIdPatch
      */
     default  ResponseEntity<? extends ToDoResponse>  todoIdPatch( String  strId,
@@ -79,6 +76,7 @@ public interface TodoApiDelegate {
     }
 
     /**
+     * Facilitates a post request
      * @see TodoApi#todoPost
      */
     default  ResponseEntity<? extends ToDoResponse>   todoPost( ToDoItemAddRequest  body) {
@@ -99,6 +97,12 @@ public interface TodoApiDelegate {
 
     void setRequest(HttpServletRequest request);
 
+    /**
+     * Creates a NoteFoundError Response
+     * @param id
+     * @return
+     * @throws IOException
+     */
     default  ResponseEntity<ToDoItemNotFoundError> createNotFoundError(Long id) throws IOException {
 
         String s = null;
@@ -112,6 +116,15 @@ public interface TodoApiDelegate {
 
     }
 
+    /**
+     * Creates a ValidationError response
+     * @param param
+     * @param location
+     * @param msg
+     * @param value
+     * @return
+     * @throws IOException
+     */
     default ResponseEntity<ToDoItemValidationError> createValidationError(String param, String location, String msg, String value) throws IOException {
         String s = null;
         try {

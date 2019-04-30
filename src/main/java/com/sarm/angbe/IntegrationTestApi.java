@@ -7,6 +7,7 @@ package com.sarm.angbe;
 
 import io.swagger.model.IntegrationTestResult;
 import io.swagger.annotations.*;
+import io.swagger.model.ToDoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public interface IntegrationTestApi {
     @RequestMapping(value = "/integrationTest",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<IntegrationTestResult> integrationTestGet(@NotNull @ApiParam(value = "base url of remote API to test", required = true) @Valid @RequestParam(value = "url", required = true) String url, HttpServletRequest request) {
+    default ResponseEntity<? extends ToDoResponse> integrationTestGet(@NotNull @ApiParam(value = "base url of remote API to test", required = true) @Valid @RequestParam(value = "url", required = true) String url, HttpServletRequest request) {
         getDelegate().setRequest(request);
         return getDelegate().integrationTestGet(url);
     }

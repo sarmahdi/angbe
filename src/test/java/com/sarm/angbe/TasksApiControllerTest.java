@@ -1,12 +1,8 @@
 package com.sarm.angbe;
 
 import io.swagger.model.BalanceTestResult;
-import io.swagger.model.ToDoItem;
 import io.swagger.model.ToDoItemValidationError;
 import io.swagger.model.ToDoResponse;
-import org.apache.http.*;
-
-import org.apache.http.protocol.HTTP;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,21 +16,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.Principal;
-import java.util.*;
-
-import static io.restassured.RestAssured.when;
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 
-
+/**
+ * test Class for TasksApiController
+ */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
